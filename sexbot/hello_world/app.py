@@ -1,42 +1,28 @@
-import json
+import json, requests, os
 
-# import requests
+atoken = os.environ['ACCESS_TOKEN']
+
+def postToLine(atoken, token, text):
+    url = 'https://api.line.me/v2/bot/message/reply'
+    headers = {'Authorization': 'Bearer ' + atoken}
+    data = {
+        "replyToken": token,
+        "messages":[{
+            "type":"text",
+            "text": text 
+        }]
+    }
+
+    return (requests.post(url, headers=headers, json=data).json())
+    
 
 
 def lambda_handler(event, context):
-    """Sample pure Lambda function
-
-    Parameters
-    ----------
-    event: dict, required
-        API Gateway Lambda Proxy Input Format
-
-        Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
-
-    context: object, required
-        Lambda Context runtime methods and attributes
-
-        Context doc: https://docs.aws.amazon.com/lambda/latest/dg/python-context-object.html
-
-    Returns
-    ------
-    API Gateway Lambda Proxy Output Format: dict
-
-        Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
-    """
-
-    # try:
-    #     ip = requests.get("http://checkip.amazonaws.com/")
-    # except requests.RequestException as e:
-    #     # Send some context about this error to Lambda Logs
-    #     print(e)
-
-    #     raise e
-
+    token = json.loads(event["body"])["events"][0]["replyToken"]
+    message = postToLine(atoken, token, "xxxxxx")
     return {
         "statusCode": 200,
         "body": json.dumps({
-            "message": "hello world",
-            # "location": ip.text.replace("\n", "")
+            "message": message,
         }),
     }

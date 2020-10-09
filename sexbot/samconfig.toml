@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "Piaktest"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1mw272ppn79mg"
+s3_prefix = "Piaktest"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
